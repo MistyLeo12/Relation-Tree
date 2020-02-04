@@ -57,5 +57,5 @@ Results indicate that the algorithm is robust against scalability issues. There 
 ## Future
 
 1. Create a radial tree to visualize the family tree instead of the typical family tree visualization.
-2. Find a laarger data set. 
+2. Find a larger data set. 
 
