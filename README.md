@@ -4,9 +4,9 @@
 While ancestral humans existed millions of years ago, modern humans have “only” been around for 200,000 some years. Modern civilization itself is only around 6000 years old. That would bring us to 4000 BC, which we already consider so long ago. In the years since then, the world’s population has exploded from an estimated 7 million to 7.5 billion.1 Due to the nature of human reproduction, it stands to reason that these 7.5 billion came from those 7 million. Not enough information is known of the earliest humans to be able to definitely say that every two people are related when we go far back enough, but we can get close, especially if we consider people with ancestors originating from the same geographical location. Perhaps the only thing that stands in our way is the lack of complete records going back far enough. And yet, if we look in the right place, there exist records that do go back far - enough being the word in question.
 
 ## Modes:
-MODE 1: Input two people and find out how they are related, if there is a known relation
-MODE 2: Input one person, and find out relatives with a certain relation to them
-MODE 3: Input two people, and get the path of their relationship between them, if any, illustrated with a visual representation of that relationship.
+- MODE 1: Input two people and find out how they are related, if there is a known relation
+- MODE 2: Input one person, and find out relatives with a certain relation to them
+- MODE 3: Input two people, and get the path of their relationship between them, if any, illustrated with a visual representation of that relationship.
 
 ## Methods
 
@@ -21,18 +21,10 @@ The second of our general methods, buildNextGen2, is similar to buildPrevGen, bu
 ### buildPrevGen(data, ret) summary
 param data is a cleaned dictionary of unique IDs (a string) to identifying information (list of strings)
 param ret is a list of lists
-This function modifies ret with each call. It takes the last element (a list) of ret and appends a new list to ret populated with the parents (mother, then father, if any) of each person in that last list. Parent IDs are directly fetchable from data, data[id][6] is mother ID and data[id][8] is father ID. id will be found by iterating through the ids in the last element of ret. When there are no more ancestors in a generation, ret will append [0]. The reasoning for this will be explained later. To get a better understanding, assume we have this combination of individuals and parent(s): A -> B, C; B -> D, E; C -> F, G; F -> H**ADD FOOTNOTE IN POST PROCESSING ON NOTATION**. In the first iteration, ret is [[A]]. The following iterations modify ret like so:
-[[A], [B, C]]
-[[A], [B, C], [D, E, F, G]]
-[[A], [B, C], [D, E, F, G], [H]]
-[[A], [B, C], [D, E, F, G], [H], [0]]
-The last viable generation, [H], has only length one because out of the previous generation, [D, E, F, G], only F had parents who were known, and only one of her parents were known.
-
+This function modifies ret with each call. It takes the last element (a list) of ret and appends a new list to ret populated with the parents (mother, then father, if any) of each person in that last list. Parent IDs are directly fetchable from data, data[id][6] is mother ID and data[id][8] is father ID. id will be found by iterating through the ids in the last element of ret. When there are no more ancestors in a generation, ret will append [0].
 
 ### buildNextGen2(data, ret) summary
-param data is a dictionary of unique IDs (strings) to children IDs (list of strings). This dictionary was created from a result of a call to child_dic(dict) *defined later*, which itself inputs a cleaned dictionary, so it is by definition already cleaned.
-param ret is a list of lists
-
+param data is a dictionary of unique IDs (strings) to children IDs (list of strings). This dictionary was created from a result of a call to child_dic(dict) *defined later*, which itself inputs a cleaned dictionary, so it is by definition already cleaned. param ret is a list of lists
  
 ## Explanation of Mode 1 - How two people are related
 Once the user has successfully given the program two ids (call these id1 and id2) to work with (detailed in the beginning of this section), a while loop is employed that calls buildPrevGen() on both users, until something in common is found on the collapsed version of the respective rets. Where collapsed() has the following effect on ret:
@@ -42,8 +34,6 @@ That was the aforementioned reason why the end of an individual’s line was ind
 This method will always guarantee closest connection(s).  Since the complete generation is built before checking for intersection, that guarantees that connections with equal strength of relation will all be found. That means that if id1 and id2 are 4th cousins in two ways, then both of those two ways will be found.
 Defining the relationship and comparing strengths of relationships - an example
 Estelle of Sweden’s ID is NF3FI, and Savannah Anne Kathleen Phillips’s ID is P695V. 
-
-
 
 ## Explanation of Mode 2 - Information about one person
 In mode 2, termination doesn’t happen upon common ancestor but rather on user input, i.e. if the user asks for an individual’s 3x great-grandparents, then buildPrevGen() will be called until the individual’s 3x great-grandparents are found, i.e. 5 times. Mode 2 is apt to print out lots of data, i.e. in the case where the user asks for all of a person’s descendants, so this mode associates individuals with years to make printing more readable, sorting them by birth year. 
